@@ -1,0 +1,170 @@
+* {
+    font-family: "JetBrains Mono",monospace;
+}
+
+body{
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+}
+
+h1 {
+    color: darkslategray;
+}
+
+x.container {
+ display: flex;
+ overflow: hidden;
+ justify-content: center;
+ flex-wrap: wrap;
+ margin:0;
+ padding: 0px;
+ background-color: whitesmoke;
+ box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+ border-radius: 10px;
+ width: 560px;
+ height: 560px;
+ box-sizing: border-box;
+}
+
+.buttonContainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:space-between;
+    gap: 10px;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: whitesmoke;
+    color: darkslategray;
+    padding: 10px;
+    border-radius: 8px;
+}
+input[type="number"] {
+    width: 220px;
+    padding: 10px;
+    border: none ;
+    color:gray;
+    text-align: right;
+    border-radius: 5px;
+    font-size: 20px;
+    outline: none; /* Removes default outline on focus */
+}
+
+#calcDisplay {
+    background-color: whitesmoke;
+    width: 220px;
+    padding: 10px;
+    border: none ;
+    color:gray;
+    text-align: right;
+    border-radius: 5px;
+    font-size: 20px;
+    outline: none; /* Removes default outline on focus */
+}
+
+
+.inputContainer {
+    display:block;
+    width: 250px;
+    height: 55px;
+    xborder: 1px solid gray;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+    box-sizing: border-box;
+    font-size: 24px;
+    background-color: whitesmoke;
+    color: darkslategray;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.calcContainer {
+ display:flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 16px;
+ padding: 20px;
+ border-radius: 10px;
+ width: 300px;
+ height: 350px;
+ box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+ box-sizing: border-box;
+ font-size: 16px;
+ background-color: whitesmoke;
+ color: darkslategray;
+}
+
+
+.btn {
+  align-items: center;
+  appearance: none;
+  background-color: #FCFCFD;
+  border-radius: 4px;
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #36395A;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "JetBrains Mono",monospace;
+  height: 28px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 10px;
+  padding-right: 10px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow .15s,transform .15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow,transform;
+  font-size: 16px;
+  font-weight: 800;
+  color: slategray;
+  width: 40px;
+  height: 45px;
+}
+
+x.btn:focus {
+  box-shadow: #d8d6e7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+}
+
+x.btn:hover {
+  box-shadow: rgba(248, 2, 219, 0.4) 0 8px 16px, rgba(248, 2, 203, 0.3) 0 14px 26px -3px, #D6D6E7 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  box-shadow: #D6D6E7 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
+
+.digitBtn {
+    color: slategray;
+}
+
+.operatorBtn {
+    background-color: rgb(193, 198, 202);
+    color: rgb(92, 19, 19);
+}
+
+.enterBtn{
+    background-color: rgb(117, 199, 166);
+    color: black
+}
+
+.clearBtn{
+    background-color: rgb(109, 160, 210);
+    color: black;
+}
+
+.toggleNegationBtn {
+    color: slategray;
+}
+
