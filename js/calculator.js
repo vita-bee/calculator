@@ -32,6 +32,14 @@ function append(x, y){
     return `${x}${y}`; 
 }
 
+function warnDivByzero() {
+    query.clear();
+    formulaDisplay.textContent = '';
+    calcDisplay.textContent = '';
+    alert("Mang, my frieng, you can't diving by zero.");
+    return;                                       
+}
+
 let query = {
       term1: '',
       term2: '',
@@ -108,13 +116,7 @@ calcBtns.forEach((calcBtn) => {
         
             if (calcBtnClassList.contains('operatorBtn')) {
                 if (!displayResult && query.complete()) {
-                    if (query.divbyZero()) {
-                        query.clear();
-                        formulaDisplay.textContent = '';
-                        calcDisplay.textContent = '';
-                        alert("Mang, my frieng, you can't diving by zero.");
-                        return;
-                    }
+                    if (query.divbyZero()) return warnDivByzero(); 
                     calcDisplay.textContent = query.result();
                     calcDisplay.style.color = "blue";
                     query.term1 = query.result();
@@ -137,13 +139,7 @@ calcBtns.forEach((calcBtn) => {
 
             if (calcBtnClassList.contains('equalBtn')) {
                 if (query.complete()) {
-                    if (query.divbyZero()) {
-                        query.clear();
-                        calcDisplay.textContent = '';
-                        formulaDisplay.textContent = '';
-                        alert("Mang, my frieng, you can't diving by zero.");
-                        return;
-                    }
+                    if (query.divbyZero()) return warnDivByzero(); 
                     formulaDisplay.textContent = query.string() + ' =';
                     calcDisplay.textContent = query.result();
                     query.clear();
