@@ -2,22 +2,14 @@ function roundToTotalDigits(number, totalDigits) {
   const numString = String(number);
   const decimalIndex = numString.indexOf('.');
   let integerDigits;
-
-  if (decimalIndex === -1) {
-    integerDigits = numString.length;
-  } else {
-    integerDigits = decimalIndex;
-  }
+  if (decimalIndex === -1) integerDigits = numString.length;
+  else integerDigits = decimalIndex;
   const decimalPlaces = totalDigits - integerDigits;
-  // Handle cases where the number already has more digits than totalDigits or is an integer
-  if (decimalPlaces < 0) {
-    // round to 0 decimal places if the integer part is too large.
-    return parseFloat(number.toFixed(0));
-  }
+  // round to 0 decimal places if the integer part is too large.
+  if (decimalPlaces < 0) return parseFloat(number.toFixed(0));
   // Round and convert back to a number
   return parseFloat(number.toFixed(decimalPlaces));
 }
-
 
 function operate(x, y, operator) {
   switch (operator){
@@ -31,12 +23,12 @@ function operate(x, y, operator) {
 
 function calculateQuery(term1, term2, operator){
     let value = operate(+term1, +term2, operator);
-    return roundToTotalDigits(value, 12);
+    return roundToTotalDigits(value, maxdigits);
 }
 
 function append(x, y){ 
-    //append but remove starting zero if any
-    if (x.charAt(0) === '0') x = x.substring(1);
+    //append but remove any starting zero if 2nd digit is not a decimal
+    if ((x.charAt(0) === '0') && !(x.charAt(1) === '.')) x = x.substring(1);
     return `${x}${y}`; 
 }
 
@@ -88,7 +80,6 @@ calcBtns.forEach((calcBtn) => {
                         return;
                     }
                     if (!query.term1) {
-                        //if (e.target.textContent === '0') return;
                         if (e.target.textContent === '.') { query.term1 = '0' + e.target.textContent;
                         } else {
                             query.term1 = e.target.textContent;
@@ -99,7 +90,6 @@ calcBtns.forEach((calcBtn) => {
                         query.term1 = append(query.term1, e.target.textContent);
                         currentTerm = 'term1';
                     } else if ((query.operator) && (!query.term2)) {
-                         //if (e.target.textContent === '0') return;
                          if (e.target.textContent === '.') query.term2 = '0' + e.target.textContent;
                          else query.term2 = e.target.textContent;
                          currentTerm = 'term2';
@@ -133,14 +123,6 @@ calcBtns.forEach((calcBtn) => {
                     query.term2 = '';
                     formulaDisplay.textContent = query.string(); 
                     currentTerm = 'operator';             
-                    return;
-                }
-                if (displayResult && !(query.operator)) {
-                    query.operator = e.target.textContent;
-                    formulaDisplay.textContent = query.string();
-                    calcDisplay.style.color = "slategray";
-                    displayResult = false;
-                    currentTerm = 'operator';  
                     return;
                 }
                 if ((query.term1) && !(query.operator)) {
