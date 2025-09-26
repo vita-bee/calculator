@@ -34,11 +34,10 @@ function calculateQuery(term1, term2, operator){
     return roundToTotalDigits(value, 12);
 }
 
-function append(x, y){ return `${x}${y}`; }
-
-function divByZero(query){
-    if (query.term2 == 0 && query.operator === '/') return true;
-    else return false;
+function append(x, y){ 
+    //append but remove starting zero if any
+    if (x.charAt(0) === '0') x = x.substring(1);
+    return `${x}${y}`; 
 }
 
 let query = {
