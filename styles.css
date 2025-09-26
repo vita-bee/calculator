@@ -50,32 +50,53 @@ input[type="number"] {
     font-size: 20px;
     outline: none; /* Removes default outline on focus */
 }
+p {
+    margin-bottom: 0em;  
+    margin-top: 0em;
+}
 
 #calcDisplay {
     background-color: whitesmoke;
     width: 220px;
-    padding: 10px;
-    border: none ;
+    margin: 0;
+    padding: 5px;
     color:gray;
     text-align: right;
     border-radius: 5px;
-    font-size: 20px;
+    font-size: 22px;
+    line-height: 1;
+    outline: none; /* Removes default outline on focus */
+}
+#formulaDisplay {
+    background-color: whitesmoke;
+    margin: 0;
+    width: 220px;
+    padding: 5px;
+    xborder: 1px solid black ;
+    color:gray;
+    text-align: right;
+    border-radius: 5px;
+    font-size: 14px;
+    line-height: 1;
     outline: none; /* Removes default outline on focus */
 }
 
-
-.inputContainer {
-    display:block;
+.displayContainer {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: flex-start ;
     width: 250px;
-    height: 55px;
-    xborder: 1px solid gray;
-    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+    min-height: 70px;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 3px -3px,#D6D6E7 0 -3px 0 inset;
     box-sizing: border-box;
-    font-size: 24px;
     background-color: whitesmoke;
     color: darkslategray;
-    padding: 5px;
+    padding: 0px;
     border-radius: 8px;
+    white-space: normal;         /* allow wrapping */
+    overflow-wrap: break-word; 
+    
 }
 
 .calcContainer {
@@ -86,12 +107,11 @@ input[type="number"] {
  padding: 20px;
  border-radius: 10px;
  width: 300px;
- height: 350px;
  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
  box-sizing: border-box;
  font-size: 16px;
  background-color: whitesmoke;
- color: darkslategray;
+ color: darkslategray; 
 }
 
 
@@ -130,14 +150,6 @@ input[type="number"] {
   height: 45px;
 }
 
-x.btn:focus {
-  box-shadow: #d8d6e7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
-}
-
-x.btn:hover {
-  box-shadow: rgba(248, 2, 219, 0.4) 0 8px 16px, rgba(248, 2, 203, 0.3) 0 14px 26px -3px, #D6D6E7 0 -3px 0 inset;
-  transform: translateY(-2px);
-}
 
 .btn:active {
   box-shadow: #D6D6E7 0 3px 7px inset;
@@ -154,17 +166,25 @@ x.btn:hover {
     color: rgb(92, 19, 19);
 }
 
-.enterBtn{
+.equalBtn{
     background-color: rgb(117, 199, 166);
     color: black
 }
 
 .clearBtn{
     background-color: rgb(109, 160, 210);
-    color: black;
+    color: rgb(92, 91, 91);
 }
 
 .toggleNegationBtn {
     color: slategray;
 }
 
+.doubleSizeBtn {
+  width: 90px;
+}
+
+.delBtn {
+    color: rgb(92, 91, 91);
+    background-color: rgb(232, 164, 164);
+}

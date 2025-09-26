@@ -1,97 +1,183 @@
-function add(x,y) {
-  return x+y;
-};
+function roundToTotalDigits(number, totalDigits) {
+  const numString = String(number);
+  const decimalIndex = numString.indexOf('.');
+  let integerDigits;
 
-function subtract(x,y) {
-	return x-y;
-};
-
-function multiply(x, y) {
-  return x*y;
-};
-
-function divide(x, y) {
-  return x/y;
-};
-
-function power(base, exponent) {
-	return base ** exponent;
-};
-
-function operate(x, y, operator) {
-  switch (operator){
-    case '+': return add(x,y);
-    case '-': return subtract(x,y);
-    case '*': return multiply(x,y);
-    case '/': return divide(x,y);
-    case '^': return power(x,y);
+  if (decimalIndex === -1) {
+    integerDigits = numString.length;
+  } else {
+    integerDigits = decimalIndex;
   }
-};
-
-function calculateQuery(query){
-    return operate(parseInt(query[0]), parseInt(query[2]), query[1]);
+  const decimalPlaces = totalDigits - integerDigits;
+  // Handle cases where the number already has more digits than totalDigits or is an integer
+  if (decimalPlaces < 0) {
+    // round to 0 decimal places if the integer part is too large.
+    return parseFloat(number.toFixed(0));
+  }
+  // Round and convert back to a number
+  return parseFloat(number.toFixed(decimalPlaces));
 }
 
 
-let xdigit = 0;
-let ydigit = 0;
-let operator = '';
-let query =[];
-let result = 0;
-const operatorlist = ['+','-','*','/','^','+/-'];
-const digitlist = ['0','1','2','3','4','5','6','7','8','9'];
-const calcDisplay = document.querySelector('#calcDisplay');
-const digitBtn = document.querySelector('.digitBtn') ;  
-const operatorBtn = document.querySelector('.operatorBtn') ; 
-const clearBtn = document.querySelector('.clearBtn') ; 
-const enterBtn = document.querySelector('.enterBtn');
-const toggleNegationBtn = document.querySelector('.toggleNegationBtn');
-const calcBtns = document.querySelectorAll('.btn');
+function operate(x, y, operator) {
+  switch (operator){
+    case '+': return x+y;
+    case '-': return x-y;
+    case '*': return x*y;
+    case '/': return x/y;
+    case '^': return x ** y;
+  }
+};
 
+function calculateQuery(term1, term2, operator){
+    let value = operate(+term1, +term2, operator);
+    return roundToTotalDigits(value, 12);
+}
+
+function append(x, y){ return `${x}${y}`; }
+
+function divByZero(query){
+    if (query.term2 == 0 && query.operator === '/') return true;
+    else return false;
+}
+
+let query = {
+      term1: '',
+      term2: '',
+      operator: '',
+      result: function() {return this.complete ? calculateQuery(this.term1, this.term2, this.operator) : null; },
+      complete:function() {return (this.term1 && this.term2 && this.operator) ? true : false; },
+      string: function() {return `${this.term1} ${this.operator} ${this.term2}`; },
+      divbyZero: function() { if (this.term2 == 0 && this.operator === '/') return true;
+                                else return false;},
+      clear: function() {this.term1=''; this.term2=''; this.operator=''; },
+    };
+
+let displayResult = false;
+const maxdigits = 12;
+const calcDisplay = document.querySelector('#calcDisplay');
+const formulaDisplay = document.querySelector('#formulaDisplay');
+const calcBtns = document.querySelectorAll('.btn');
+let executed = false;
+let currentTerm = '';
 
 calcBtns.forEach((calcBtn) => {
         calcBtn.addEventListener("click", (e) => {
-            if (e.target.textContent=== "AC"){
+        const calcBtnClassList = e.target.classList;
+        
+            if (calcBtnClassList.contains('clearBtn')) {
+                formulaDisplay.textContent = '';
                 calcDisplay.textContent = '';
-                query.length = 0;
+                query.clear();
+                displayResult = false;
                 return;
             }
-            if (!query[0] && (!(digitlist.includes(e.target.textContent)))) { 
-                return;
-            } else if (!query[0] && ((digitlist.includes(e.target.textContent)))) {
-                query[0] = e.target.textContent;
-                calcDisplay.textContent = query[0];
-            } else if (query[0] && !(query[1]) && ((digitlist.includes(e.target.textContent)))) {
-                query[0] = `${query[0]}${e.target.textContent}`;
-                calcDisplay.textContent = query[0];
-            } else if (query[0] && !(query[1]) && ((operatorlist.includes(e.target.textContent)))) {
-                query[1] = e.target.textContent;
-                calcDisplay.textContent = query[0] + query[1]
-            } else if (query[0] && (query[1]) && !(query[2]) && ((operatorlist.includes(e.target.textContent)))) {
-                return;
-            } else if (query[0] && (query[1]) && !(query[2]) && ((digitlist.includes(e.target.textContent)))) {
-                query[2] = e.target.textContent;
-                calcDisplay.textContent = query[0] + query[1] + query[2];
-            } else if (query[0] && (query[1]) && (query[2]) && ((digitlist.includes(e.target.textContent)))) {
-                query[2] = `${query[2]}${e.target.textContent}`;
-                calcDisplay.textContent = query[0] + query[1] + query[2];
-            } else if (query[0] && (query[1]) && (query[2]) && (e.target.textContent === '=')) {
-                query[3] = e.target.textContent;
-                calcDisplay.textContent = query[0] + query[1] + query[2] + query[3];
-                result = calculateQuery(query);
-                calcDisplay.textContent = result;
-                query.length = 0; 
-                query[0] = result;
-            } else if (query[0] && (query[1]) && (query[2]) && (operatorlist.includes(e.target.textContent))) {
-                query[3] = '=';
-                calcDisplay.textContent = query[0] + query[1] + query[2] + query[3];
-                result = calculateQuery(query);
-                calcDisplay.textContent = result;
-                query.length=2;
-                query[0]=result;
-                query[1]=e.target.textContent;
+
+            if (calcBtnClassList.contains('digitBtn')) {
                 
-                
+                    if (displayResult && !(query.operator) ) {
+                        query.clear();
+                        if (!(e.target.textContent === '0')) {
+                            if (e.target.textContent === '.') query.term1 = '0' + e.target.textContent;
+                            else query.term1 = e.target.textContent;
+                        }
+                        formulaDisplay.textContent = '0';
+                        currentTerm = 'term1';
+                        calcDisplay.style.color = "slategray";
+                        calcDisplay.textContent = query[currentTerm];
+                        displayResult = false;
+                        return;
+                    }
+                    if (!query.term1) {
+                        if (e.target.textContent === '0') return;
+                        if (e.target.textContent === '.') query.term1 = '0' + e.target.textContent;
+                        else query.term1 = e.target.textContent;
+                    } else if ((query.term1) && (query.term1.length <= maxdigits) && (!query.operator)) {
+                        if ((e.target.textContent === '.') && (query.term1.includes('.')) ) return;
+                        query.term1 = append(query.term1, e.target.textContent);
+                        currentTerm = 'term1';
+                    } else if ((query.operator) && (!query.term2)) {
+                         if (e.target.textContent === '0') return;
+                         if (e.target.textContent === '.') query.term2 = '0' + e.target.textContent;
+                         else query.term2 = e.target.textContent;
+                         currentTerm = 'term2';
+                    } else if ((query.operator) && (query.term2) && (query.term2.length <= maxdigits)) {
+                        if ((e.target.textContent === '.') && (query.term2.includes('.')) ) return;
+                        query.term2 = append(query.term2, e.target.textContent);
+                        currentTerm = 'term2';
+                    }
+                    formulaDisplay.textContent = `${query.term1} ${query.operator}`;
+                    calcDisplay.style.color = "slategray";
+                    calcDisplay.textContent = query[currentTerm];
+                    displayResult = false;
+                    return;
             }
+            
+        
+            if (calcBtnClassList.contains('operatorBtn')) {
+                if (!displayResult && query.complete()) {
+                    if (query.divbyZero()) {
+                        query.clear();
+                        formulaDisplay.textContent = '';
+                        calcDisplay.textContent = '';
+                        alert("Mang, my frieng, you can't diving by zero.");
+                        return;
+                    }
+                    calcDisplay.textContent = query.result();
+                    calcDisplay.style.color = "blue";
+                    query.term1 = query.result();
+                    displayResult = true; 
+                    query.operator = e.target.textContent;
+                    query.term2 = '';
+                    formulaDisplay.textContent = query.string(); 
+                    currentTerm = 'operator';             
+                    return;
+                }
+                if (displayResult && !(query.operator)) {
+                    query.operator = e.target.textContent;
+                    formulaDisplay.textContent = query.string();
+                    calcDisplay.style.color = "slategray";
+                    displayResult = false;
+                    currentTerm = 'operator';  
+                    return;
+                }
+                if ((query.term1) && !(query.operator)) {
+                    query.operator = e.target.textContent;
+                    formulaDisplay.textContent = query.string();
+                    calcDisplay.style.color = "slategray";
+                    displayResult = false;
+                    currentTerm = 'operator';  
+                    return;
+                }
+            }
+
+            if (calcBtnClassList.contains('equalBtn')) {
+                if (query.complete()) {
+                    if (query.divbyZero()) {
+                        query.clear();
+                        calcDisplay.textContent = '';
+                        formulaDisplay.textContent = '';
+                        alert("Mang, my frieng, you can't diving by zero.");
+                        return;
+                    }
+                    formulaDisplay.textContent = query.string() + ' =';
+                    calcDisplay.textContent = query.result();
+                    query.clear();
+                    query.term1 = calcDisplay.textContent;
+                    calcDisplay.style.color = "blue";
+                    displayResult = true;
+                    return;
+                }
+            }
+
+            if (calcBtnClassList.contains('delBtn')) {
+                if (!displayResult){
+                    query[currentTerm] = query[currentTerm].slice(0,-1);
+                    calcDisplay.textContent = query[currentTerm];
+                }
+            }
+            
+
+            
         })
 })
