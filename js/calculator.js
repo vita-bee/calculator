@@ -90,8 +90,11 @@ calcBtns.forEach((calcBtn) => {
                     }
                     if (!query.term1) {
                         //if (e.target.textContent === '0') return;
-                        if (e.target.textContent === '.') query.term1 = '0' + e.target.textContent;
-                        else query.term1 = e.target.textContent;
+                        if (e.target.textContent === '.') { query.term1 = '0' + e.target.textContent;
+                        } else {
+                            query.term1 = e.target.textContent;
+                            currentTerm = 'term1';
+                        }
                     } else if ((query.term1) && (query.term1.length <= maxdigits) && (!query.operator)) {
                         if ((e.target.textContent === '.') && (query.term1.includes('.')) ) return;
                         query.term1 = append(query.term1, e.target.textContent);
